@@ -12,15 +12,15 @@ This is a rather simple ranking algorithm for NCAA Division 1 FBS Football
 
 ##Current Rankings (Dec 1, 2013)
 
- 1. Ohio State: 1.0
- 2. Florida State: 0.9916433154628201
- 3. Auburn: 0.9648474630670477
- 4. Missouri: 0.9547950288371407
- 5. Stanford: 0.9178481994550259
- 6. Alabama: 0.9137801191466975
- 7. Northern Illinois: 0.9100219523517904
- 8. Arizona State: 0.908771718362732
- 9. Michigan State: 0.9030880665138108
+1. Ohio State: 1.0
+2. Florida State: 0.9916433154628201
+3. Auburn: 0.9648474630670477
+4. Missouri: 0.9547950288371407
+5. Stanford: 0.9178481994550259
+6. Alabama: 0.9137801191466975
+7. Northern Illinois: 0.9100219523517904
+8. Arizona State: 0.908771718362732
+9. Michigan State: 0.9030880665138108
 10. Baylor: 0.8818596411712927
 11. U-C-F: 0.880655063746471
 12. Oklahoma State: 0.876936215107866
