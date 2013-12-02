@@ -15,9 +15,26 @@ public class Main {
         Map<String, Double> currentValuesPerTeam = new HashMap<String, Double>();
         Map<String, Double> nextValuesPerTeam = new HashMap<String, Double>();
         
-        for (int i = 0; i < 20; i++) {
+        for (String[] game : Data.SCORES) {
+            String team1 = game[0];
+            String team2 = game[2];
+            if (gamesPerTeam.containsKey(team1)) {
+                gamesPerTeam.put(team1, gamesPerTeam.get(team1) + 1);
+            } else {
+                gamesPerTeam.put(team1, 1);
+            }
+            if (gamesPerTeam.containsKey(team2)) {
+                gamesPerTeam.put(team2, gamesPerTeam.get(team2) + 1);
+            } else {
+                gamesPerTeam.put(team2, 1);
+            }
+        }
+        
+        // Data stops changing around iteration 50
+        for (int i = 0; i < 100; i++) {
             currentValuesPerTeam = nextValuesPerTeam;
             nextValuesPerTeam = new HashMap<String, Double>();
+            
             for (String[] game : Data.SCORES) {
                 String team1 = game[0];
                 int team1Score = Integer.parseInt(game[1]);
@@ -53,35 +70,43 @@ public class Main {
                         nextValuesPerTeam.put(team2, Math.sqrt(currentValuesPerTeam.get(team1)));
                     }
                 }
-                
-                if (i == 0) {
-                    if (gamesPerTeam.containsKey(team1)) {
-                        gamesPerTeam.put(team1, gamesPerTeam.get(team1) + 1);
-                    } else {
-                        gamesPerTeam.put(team1, 1);
-                    }
-                    if (gamesPerTeam.containsKey(team2)) {
-                        gamesPerTeam.put(team2, gamesPerTeam.get(team2) + 1);
-                    } else {
-                        gamesPerTeam.put(team2, 1);
-                    }
+            }
+            
+            // Weight based on number of games played
+            int maxGames = -1;
+            for (int games : gamesPerTeam.values()) {
+                maxGames = Math.max(games, maxGames);
+            }
+            for (String team : nextValuesPerTeam.keySet()) {
+                if (!Data.FCS_TEAMS.contains(team)) {
+                    int numGames = gamesPerTeam.get(team);
+                    double value = nextValuesPerTeam.get(team);
+                    value = value * maxGames / numGames;
+                    nextValuesPerTeam.put(team, value);
                 }
             }
+            
+            // Normalize between 0.0 - 1.0
             double min = Double.MAX_VALUE;
             double max = Double.MIN_VALUE;
-            for (Double value : nextValuesPerTeam.values()) {
+            for (double value : nextValuesPerTeam.values()) {
                 min = Math.min(min, value);
                 max = Math.max(max, value);
             }
-            for (String key : nextValuesPerTeam.keySet()) {
-                double value = nextValuesPerTeam.get(key);
+            for (String team : nextValuesPerTeam.keySet()) {
+                double value = nextValuesPerTeam.get(team);
                 value = (value - min) / (max - min);
-                nextValuesPerTeam.put(key, value);
+                nextValuesPerTeam.put(team, value);
             }
             
-            for (String s : Data.DIVISION_TWO_SET) {
+            // Reset all Division 1 FCS Schools to 0.0
+            for (String s : Data.FCS_TEAMS) {
                 nextValuesPerTeam.put(s, 0.0);
             }
+        }
+        
+        for (String team : Data.FCS_TEAMS) {
+            nextValuesPerTeam.remove(team);
         }
         
         ArrayList<Entry<String, Double>> sorted = new ArrayList<Entry<String,Double>>(nextValuesPerTeam.entrySet());
@@ -94,24 +119,9 @@ public class Main {
         });
         for (int i = 0; i < sorted.size(); i++) {
             Entry<String, Double> team = sorted.get(i);
-            if (!Data.DIVISION_TWO_SET.contains(team.getKey())) {
-                System.out.println((i < 9 ? " " : "") + (i + 1) +". " + team.getKey() + ": " + team.getValue());
+            if (!Data.FCS_TEAMS.contains(team.getKey())) {
+                System.out.println(String.format("%3d", i + 1) +". " + team.getKey() + ": " + team.getValue());
             }
         }
-        
-//        ArrayList<Entry<String, Integer>> sortedGamesPerTeam = new ArrayList<Entry<String,Integer>>(gamesPerTeam.entrySet());
-//        Collections.sort(sortedGamesPerTeam, new Comparator<Entry<String, Integer>>() {
-//
-//            @Override
-//            public int compare(Entry<String, Integer> o1, Entry<String, Integer> o2) {
-//                return o2.getValue() - o1.getValue();
-//            }
-//        });
-//        for (Entry<String, Integer> team : sortedGamesPerTeam) {
-//            if (!Data.DIVISION_TWO_SET.contains(team.getKey())) {
-//                System.out.println(team.getKey() + ": " + team.getValue());
-//            }
-//        }
     }
-
 }
