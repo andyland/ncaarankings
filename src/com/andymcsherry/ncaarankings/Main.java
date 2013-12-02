@@ -108,7 +108,9 @@ public class Main {
 //            }
 //        });
 //        for (Entry<String, Integer> team : sortedGamesPerTeam) {
-//            System.out.println(team.getKey() + ": " + team.getValue());
+//            if (!Data.DIVISION_TWO_SET.contains(team.getKey())) {
+//                System.out.println(team.getKey() + ": " + team.getValue());
+//            }
 //        }
     }
 
