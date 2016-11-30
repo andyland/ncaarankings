@@ -49,25 +49,25 @@ public class Main {
                 }
                 if (team1Score > team2Score) {
                     if (nextValuesPerTeam.containsKey(team1)) {
-                        nextValuesPerTeam.put(team1, nextValuesPerTeam.get(team1) + Math.sqrt(currentValuesPerTeam.get(team2)));
+                        nextValuesPerTeam.put(team1, nextValuesPerTeam.get(team1) + (currentValuesPerTeam.get(team2)));
                     } else {
-                        nextValuesPerTeam.put(team1, Math.sqrt(currentValuesPerTeam.get(team2)));
+                        nextValuesPerTeam.put(team1, (currentValuesPerTeam.get(team2)));
                     }
                     if (nextValuesPerTeam.containsKey(team2)) {
-                        nextValuesPerTeam.put(team2, nextValuesPerTeam.get(team2) - Math.sqrt(1 - currentValuesPerTeam.get(team1)));
+                        nextValuesPerTeam.put(team2, nextValuesPerTeam.get(team2) - (1 - currentValuesPerTeam.get(team1)));
                     } else {
-                        nextValuesPerTeam.put(team2, - Math.sqrt(1 - currentValuesPerTeam.get(team1)));
+                        nextValuesPerTeam.put(team2, - (1 - currentValuesPerTeam.get(team1)));
                     }
                 } else if (team1Score < team2Score) {
                     if (nextValuesPerTeam.containsKey(team1)) {
-                        nextValuesPerTeam.put(team1, nextValuesPerTeam.get(team1) - Math.sqrt(1 - currentValuesPerTeam.get(team2)));
+                        nextValuesPerTeam.put(team1, nextValuesPerTeam.get(team1) - (1 - currentValuesPerTeam.get(team2)));
                     } else {
-                        nextValuesPerTeam.put(team1, - Math.sqrt(1 - currentValuesPerTeam.get(team2)));
+                        nextValuesPerTeam.put(team1, - (1 - currentValuesPerTeam.get(team2)));
                     }
                     if (nextValuesPerTeam.containsKey(team2)) {
-                        nextValuesPerTeam.put(team2, nextValuesPerTeam.get(team2) + Math.sqrt(currentValuesPerTeam.get(team1)));
+                        nextValuesPerTeam.put(team2, nextValuesPerTeam.get(team2) + (currentValuesPerTeam.get(team1)));
                     } else {
-                        nextValuesPerTeam.put(team2, Math.sqrt(currentValuesPerTeam.get(team1)));
+                        nextValuesPerTeam.put(team2, (currentValuesPerTeam.get(team1)));
                     }
                 }
             }
@@ -120,7 +120,7 @@ public class Main {
         for (int i = 0; i < sorted.size(); i++) {
             Entry<String, Double> team = sorted.get(i);
             if (!Data.FCS_TEAMS.contains(team.getKey())) {
-                System.out.println(String.format("%3d", i + 1) +". " + team.getKey() + ": " + team.getValue());
+                System.out.println(String.format("%d", i + 1) +". " + team.getKey() + ": " + team.getValue());
             }
         }
     }
