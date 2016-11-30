@@ -4,7 +4,7 @@ This is a rather simple ranking algorithm for NCAA Division 1 FBS Football
 
 ##Algorithm Considerations
 
-1. Only wins and losses count, no consideration is given to margin fof victory or overtime
+1. Only wins and losses count, no consideration is given to margin of victory or overtime
 1. Wins and losses are weighted by the strength of the opponent being faced
 1. The calculation is iterated until they converge
 1. Playing a Division 1 FCS team will be counted as playing the worst team in Division 1 FBS
