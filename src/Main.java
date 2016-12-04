@@ -14,6 +14,7 @@ public class Main {
         
         Map<String, Double> currentValuesPerTeam = new HashMap<String, Double>();
         Map<String, Double> nextValuesPerTeam = new HashMap<String, Double>();
+        Map<String, Double> strengthOfSchedule = new HashMap<String, Double>();
         
         for (String[] game : Data.SCORES) {
             String team1 = game[0];
@@ -46,7 +47,7 @@ public class Main {
                 }
                 if (!currentValuesPerTeam.containsKey(team2)) {
                     currentValuesPerTeam.put(team2, .5);
-                }
+                }                
                 if (team1Score > team2Score) {
                     if (nextValuesPerTeam.containsKey(team1)) {
                         nextValuesPerTeam.put(team1, nextValuesPerTeam.get(team1) + (currentValuesPerTeam.get(team2)));
@@ -108,8 +109,29 @@ public class Main {
         for (String team : Data.FCS_TEAMS) {
             nextValuesPerTeam.remove(team);
         }
+        for (String[] game : Data.SCORES) {
+        	String team1 = game[0];
+            String team2 = game[2];
+        	strengthOfSchedule.put(team1, strengthOfSchedule.getOrDefault(team1, 0.0) + nextValuesPerTeam.getOrDefault(team2, 0.0));
+        	strengthOfSchedule.put(team2, strengthOfSchedule.getOrDefault(team2, 0.0) + nextValuesPerTeam.getOrDefault(team1, 0.0));
+        }
+        for (String team : Data.FCS_TEAMS) {
+        	strengthOfSchedule.remove(team);
+        }
+        double min = Double.MAX_VALUE;
+        double max = Double.MIN_VALUE;
+        for (double value : strengthOfSchedule.values()) {
+            min = Math.min(min, value);
+            max = Math.max(max, value);
+        }
+        for (String team : strengthOfSchedule.keySet()) {
+            double value = strengthOfSchedule.get(team);
+            value = (value - min) / (max - min);
+            strengthOfSchedule.put(team, value);
+        }
         
         ArrayList<Entry<String, Double>> sorted = new ArrayList<Entry<String,Double>>(nextValuesPerTeam.entrySet());
+        ArrayList<Entry<String, Double>> sortedStrength = new ArrayList<Entry<String,Double>>(strengthOfSchedule.entrySet());
         Collections.sort(sorted, new Comparator<Entry<String, Double>>() {
 
             @Override
@@ -117,8 +139,24 @@ public class Main {
                 return (int)Math.signum(o2.getValue() - o1.getValue());
             }
         });
+        Collections.sort(sortedStrength, new Comparator<Entry<String, Double>>() {
+
+            @Override
+            public int compare(Entry<String, Double> o1, Entry<String, Double> o2) {
+                return (int)Math.signum(o2.getValue() - o1.getValue());
+            }
+        });
+        
+        System.out.println("\nRANKINGS:\n");
         for (int i = 0; i < sorted.size(); i++) {
             Entry<String, Double> team = sorted.get(i);
+            if (!Data.FCS_TEAMS.contains(team.getKey())) {
+                System.out.println(String.format("%d", i + 1) +". " + team.getKey() + ": " + team.getValue());
+            }
+        }
+        System.out.println("\nSTRENGTH OF SCHEDULE:\n");
+        for (int i = 0; i < sortedStrength.size(); i++) {
+            Entry<String, Double> team = sortedStrength.get(i);
             if (!Data.FCS_TEAMS.contains(team.getKey())) {
                 System.out.println(String.format("%d", i + 1) +". " + team.getKey() + ": " + team.getValue());
             }
