@@ -15,6 +15,8 @@ public class Main {
         Map<String, Double> currentValuesPerTeam = new HashMap<String, Double>();
         Map<String, Double> nextValuesPerTeam = new HashMap<String, Double>();
         Map<String, Double> strengthOfSchedule = new HashMap<String, Double>();
+        Map<String, Integer> wins = new HashMap<String, Integer>();
+        Map<String, Integer> losses = new HashMap<String, Integer>();
         
         for (String[] game : Data.SCORES) {
             String team1 = game[0];
@@ -28,6 +30,13 @@ public class Main {
                 gamesPerTeam.put(team2, gamesPerTeam.get(team2) + 1);
             } else {
                 gamesPerTeam.put(team2, 1);
+            }
+            if (Integer.parseInt(game[1]) > Integer.parseInt(game[3])) {
+            	wins.put(team1, wins.getOrDefault(team1, 0) + 1);
+            	losses.put(team2, losses.getOrDefault(team2, 0) + 1);
+            } else {
+            	wins.put(team2, wins.getOrDefault(team2, 0) + 1);
+            	losses.put(team1, losses.getOrDefault(team1, 0) + 1);	
             }
         }
         
@@ -112,8 +121,8 @@ public class Main {
         for (String[] game : Data.SCORES) {
         	String team1 = game[0];
             String team2 = game[2];
-        	strengthOfSchedule.put(team1, strengthOfSchedule.getOrDefault(team1, 0.0) + nextValuesPerTeam.getOrDefault(team2, 0.0));
-        	strengthOfSchedule.put(team2, strengthOfSchedule.getOrDefault(team2, 0.0) + nextValuesPerTeam.getOrDefault(team1, 0.0));
+        	strengthOfSchedule.put(team1, strengthOfSchedule.getOrDefault(team1, nextValuesPerTeam.getOrDefault(team1, 0.0)) + nextValuesPerTeam.getOrDefault(team2, 0.0));
+        	strengthOfSchedule.put(team2, strengthOfSchedule.getOrDefault(team2, nextValuesPerTeam.getOrDefault(team2, 0.0)) + nextValuesPerTeam.getOrDefault(team1, 0.0));
         }
         for (String team : Data.FCS_TEAMS) {
         	strengthOfSchedule.remove(team);
@@ -151,7 +160,9 @@ public class Main {
         for (int i = 0; i < sorted.size(); i++) {
             Entry<String, Double> team = sorted.get(i);
             if (!Data.FCS_TEAMS.contains(team.getKey())) {
-                System.out.println(String.format("%d", i + 1) +". " + team.getKey() + ": " + team.getValue());
+            	int numWins = wins.getOrDefault(team.getKey(), 0);
+            	int numLosses = losses.getOrDefault(team.getKey(), 0);
+                System.out.println(String.format("%d", i + 1) +". " + team.getKey() + String.format(" (%d-%d): ", numWins, numLosses) + team.getValue());
             }
         }
         System.out.println("\nSTRENGTH OF SCHEDULE:\n");
