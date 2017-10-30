@@ -50,35 +50,21 @@ public class Main {
                 int team1Score = Integer.parseInt(game[1]);
                 String team2 = game[2];
                 int team2Score = Integer.parseInt(game[3]);
-
-                if (!currentValuesPerTeam.containsKey(team1)) {
-                    currentValuesPerTeam.put(team1, .5);
-                }
-                if (!currentValuesPerTeam.containsKey(team2)) {
-                    currentValuesPerTeam.put(team2, .5);
-                }                
+            
                 if (team1Score > team2Score) {
-                    if (nextValuesPerTeam.containsKey(team1)) {
-                        nextValuesPerTeam.put(team1, nextValuesPerTeam.get(team1) + (currentValuesPerTeam.get(team2)));
-                    } else {
-                        nextValuesPerTeam.put(team1, (currentValuesPerTeam.get(team2)));
-                    }
-                    if (nextValuesPerTeam.containsKey(team2)) {
-                        nextValuesPerTeam.put(team2, nextValuesPerTeam.get(team2) - (1 - currentValuesPerTeam.get(team1)));
-                    } else {
-                        nextValuesPerTeam.put(team2, - (1 - currentValuesPerTeam.get(team1)));
-                    }
+                	nextValuesPerTeam.put(team1, 
+                			nextValuesPerTeam.getOrDefault(team1, 0.0) 
+                			+ (currentValuesPerTeam.getOrDefault(team2, 0.5)));
+                	nextValuesPerTeam.put(team2, 
+                			nextValuesPerTeam.getOrDefault(team2, 0.0) 
+                			- (1 - currentValuesPerTeam.getOrDefault(team1, 0.5)));
                 } else if (team1Score < team2Score) {
-                    if (nextValuesPerTeam.containsKey(team1)) {
-                        nextValuesPerTeam.put(team1, nextValuesPerTeam.get(team1) - (1 - currentValuesPerTeam.get(team2)));
-                    } else {
-                        nextValuesPerTeam.put(team1, - (1 - currentValuesPerTeam.get(team2)));
-                    }
-                    if (nextValuesPerTeam.containsKey(team2)) {
-                        nextValuesPerTeam.put(team2, nextValuesPerTeam.get(team2) + (currentValuesPerTeam.get(team1)));
-                    } else {
-                        nextValuesPerTeam.put(team2, (currentValuesPerTeam.get(team1)));
-                    }
+                    nextValuesPerTeam.put(team1, 
+                    		nextValuesPerTeam.getOrDefault(team1, 0.0) 
+                    		- (1 - currentValuesPerTeam.getOrDefault(team2, 0.5)));
+                    nextValuesPerTeam.put(team2, 
+                    		nextValuesPerTeam.getOrDefault(team2, 0.0) 
+                    		+ (currentValuesPerTeam.getOrDefault(team1, 0.5)));
                 }
             }
             
