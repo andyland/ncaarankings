@@ -10,9 +10,6 @@ This is a rather simple ranking algorithm for NCAA Division 1 FBS Football
 
 ## Current Rankings (Nov 12, 2017)
 
-
-RANKINGS:
-
 1. Alabama (10-0): 1.0
 2. Miami (FL) (9-0): 0.9678382438654347
 3. Wisconsin (10-0): 0.9672632259298855
