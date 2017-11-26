@@ -1,7 +1,9 @@
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -142,7 +144,8 @@ public class Main {
             }
         });
         
-        System.out.println("\nRANKINGS:\n");
+        String date = new SimpleDateFormat("MMM dd, yyyy").format(new Date());
+        System.out.println(String.format("\n## Current Rankings(%s):\n", date));
         for (int i = 0; i < sorted.size(); i++) {
             Entry<String, Double> team = sorted.get(i);
             if (!Data.FCS_TEAMS.contains(team.getKey())) {
@@ -151,7 +154,7 @@ public class Main {
                 System.out.println(String.format("%d", i + 1) +". " + team.getKey() + String.format(" (%d-%d): ", numWins, numLosses) + team.getValue());
             }
         }
-        System.out.println("\nSTRENGTH OF SCHEDULE:\n");
+        System.out.println("\n## Strength of Schedule\n");
         for (int i = 0; i < sortedStrength.size(); i++) {
             Entry<String, Double> team = sortedStrength.get(i);
             if (!Data.FCS_TEAMS.contains(team.getKey())) {
