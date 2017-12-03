@@ -48,26 +48,35 @@ public class Main {
             nextValuesPerTeam = new HashMap<String, Double>();
             
             for (String[] game : Data.SCORES) {
-                String team1 = game[0];
                 int team1Score = Integer.parseInt(game[1]);
-                String team2 = game[2];
                 int team2Score = Integer.parseInt(game[3]);
-            
+                String winner;
+                String loser;
                 if (team1Score > team2Score) {
-                	nextValuesPerTeam.put(team1, 
-                			nextValuesPerTeam.getOrDefault(team1, 0.0) 
-                			+ (currentValuesPerTeam.getOrDefault(team2, 0.5)));
-                	nextValuesPerTeam.put(team2, 
-                			nextValuesPerTeam.getOrDefault(team2, 0.0) 
-                			- (1 - currentValuesPerTeam.getOrDefault(team1, 0.5)));
-                } else if (team1Score < team2Score) {
-                    nextValuesPerTeam.put(team1, 
-                    		nextValuesPerTeam.getOrDefault(team1, 0.0) 
-                    		- (1 - currentValuesPerTeam.getOrDefault(team2, 0.5)));
-                    nextValuesPerTeam.put(team2, 
-                    		nextValuesPerTeam.getOrDefault(team2, 0.0) 
-                    		+ (currentValuesPerTeam.getOrDefault(team1, 0.5)));
+                	winner = game[0];
+        			loser = game[2];
+                } else {
+                	winner = game[0];
+        			loser = game[2];
                 }
+                Double winnerNext = nextValuesPerTeam.getOrDefault(winner, 0.0);
+                Double loserNext = nextValuesPerTeam.getOrDefault(loser, 0.0);
+                Double winnerCurrent = currentValuesPerTeam.getOrDefault(winner, 0.5);
+                Double loserCurrent = currentValuesPerTeam.getOrDefault(loser, 0.5);
+                
+                if (winnerCurrent > .9) {
+                	winnerCurrent /= 1.1;
+                } else if (winnerCurrent > .8) {
+                	winnerCurrent /= 1.05;
+                }
+                if (loserCurrent > .9) {
+                	loserCurrent *= 1.1;
+                } else if (loserCurrent > .8) {
+                	loserCurrent *= 1.05;
+                } 
+                
+            	nextValuesPerTeam.put(winner, winnerNext + loserCurrent);
+            	nextValuesPerTeam.put(loser, loserNext + (1 - winnerCurrent));
             }
             
             // Weight based on number of games played
