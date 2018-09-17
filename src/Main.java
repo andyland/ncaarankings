@@ -73,10 +73,10 @@ public class Main {
                 	loserCurrent *= 1.1;
                 } else if (loserCurrent > .8) {
                 	loserCurrent *= 1.05;
-                } 
+                }
                 
             	nextValuesPerTeam.put(winner, winnerNext + loserCurrent);
-            	nextValuesPerTeam.put(loser, loserNext + (1 - winnerCurrent));
+            	nextValuesPerTeam.put(loser, loserNext - (1 - winnerCurrent));
             }
             
             // Weight based on number of games played
