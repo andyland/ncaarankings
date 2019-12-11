@@ -840,7 +840,17 @@ public class Data {
 		{"Utah","45","Colorado","15"},
 		{"Utah State","38","New Mexico","25"},
 		{"Western Kentucky","31","Middle Tennessee State","26"},
-		{"Wisconsin","38","Minnesota","17"} };
+		{"Wisconsin","38","Minnesota","17"},
+		{"Oregon","37","Utah","15"},
+		{"Appalachian State","45","Louisiana","38"},
+		{"Boise State","31","Hawaii","10"},
+		{"Clemson","62","Virginia","17"},
+		{"Florida Atlantic","49","Alabama-Birmingham","6"},
+		{"Louisiana State","37","Georgia","10"},
+		{"Memphis","29","Cincinnati","24"},
+		{"Miami (OH)","26","Central Michigan","21"},
+		{"Ohio State","34","Wisconsin","21"},
+		{"Oklahoma","30","Baylor","23"} };
 
 		private static final String[] FCS = {
 		"Texas Southern", "Western Carolina", "Austin Peay",
